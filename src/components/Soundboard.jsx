@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Volume2, Loader2, Download, ArrowUp } from 'lucide-react';
+import { saveAs } from 'file-saver';
 
 const Soundboard = () => {
   const [sounds, setSounds] = useState([]);
@@ -54,16 +55,11 @@ const Soundboard = () => {
   const downloadSound = async (url, name) => {
     try {
       const response = await fetch(url);
+      if (!response.ok) throw new Error('Network response was not ok');
+  
       const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = downloadUrl;
       const extension = url.split('.').pop() || 'mp3';
-      a.download = `${name}.${extension}`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(downloadUrl);
-      document.body.removeChild(a);
+      saveAs(blob, `${name}.${extension}`);
     } catch (error) {
       console.error('Download failed:', error);
     }
