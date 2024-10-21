@@ -30,7 +30,7 @@ const Soundboard = () => {
 
   const fetchSounds = async () => {
     try {
-      const response = await fetch('http://192.168.1.2/api.php');
+      const response = await fetch('https://rwarthar.site/api.php');
       const data = await response.json();
       setSounds(data);
       setLoading(false);
